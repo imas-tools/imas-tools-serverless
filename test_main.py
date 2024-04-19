@@ -8,14 +8,15 @@ def test_metadata():
     assert res.status_code == 200
     assert res.json()["title"] == song_name
 
-def test_month_articles():
+def test_month_schedule():
     client = TestClient(app)
-    res = client.get(f"/portal/calendar/month")
+    res = client.get(f"/portal/schedule/month")
     assert res.status_code == 200
     assert len(res.json()["article_list"]) > 0
 
-def test_today_articles():
+
+def test_today_schedule():
     client = TestClient(app)
-    res = client.get(f"/portal/calendar/today")
+    res = client.get(f"/portal/schedule/today")
     assert res.status_code == 200
     assert len(res.json()["article_list"]) > 0
