@@ -2,6 +2,7 @@ from fastapi import FastAPI, __version__
 
 from imas_tools.recochoku import query_metadata_for
 from imas_tools.portal.article import fetch_schedule_for_month, fetch_schedule_for_today
+from imas_tools.story.gakuen_parser import parse_messages
 
 app = FastAPI()
 
@@ -20,3 +21,16 @@ async def month_schedule(
 @app.get("/portal/schedule/today")
 async def today_schedule(brands: list[str] = [], subcategories: list[str] = []):
     return fetch_schedule_for_today(brands, subcategories)  # type: ignore
+
+from pydantic import BaseModel
+
+
+class Item(BaseModel):
+    story_txt: str
+
+
+@app.post("/story/gakuen_parser")
+async def gakuen_parser(item: Item):
+    parsed = parse_messages(item.story_txt)
+    # print(parsed)
+    return parsed
